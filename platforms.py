@@ -6,6 +6,7 @@ from settings import *
 class Platform:
     sprite_name = "platform.png"
     color = (90,160,80)
+    shake = None
     def __init__(self,x,y):
         self.x = float(x)
         self.y = float(y)
@@ -64,6 +65,7 @@ class CPlatform(Platform):
 class SPlatform(Platform):
     sprite_name = "platform_spring.png"
     color = (220,80,80)
+    shake = (2,8)
 
     def on_land(self,player):
         return SPRING_JUMP

@@ -5,6 +5,7 @@ from enemy import make_enemy
 from platforms import NPlatform, make_platform
 from player import Player
 from settings import *
+from shake import ScreenS
 from zones import get_zone, pick, sky_color
 
 class World:
@@ -19,6 +20,7 @@ class World:
         self.dead = False
         self.reach_peak = False
         self.tick = 0
+        self.shake = ScreenS()
         self.platform = [NPlatform(W//2 - PLAT_W//2, H-30)]
         self.enemy = []
         self.gen_y = H -30
@@ -26,6 +28,10 @@ class World:
     @property
     def zone(self):
         return get_zone(self.height)
+    def die(self,strength=6, frame=20):
+        if not self.dead:
+            self.dead = True
+            self.shake.trigger(strength, frame)
     def generate(self):
         while self.gen_y>self.camera-60:
             max_gap = min(50+self.height//100,80)
@@ -59,6 +65,8 @@ class World:
                 if overlap and prev_btm <= plat.y and new_btm>=plat.y:
                     p.y=plat.y-PLAYER_H
                     p.vy = plat.on_land(p)
+                    if plat.shake:
+                        self.shake.trigger(*plat.shake)
                     break
         for e in self.enemy:
             if e.dead or not p.rect.colliderect(e.rect):
@@ -66,8 +74,9 @@ class World:
             if e.stompable and p.vy > 0 and prev_btm <= e.y + 6:
                 e.dead = True
                 p.vy = STOMP_BOUNCE
+                self.shake.trigger(3,8)
             else:
-                self.dead = True
+                self.die(6,20)
         if p.y - self.camera < H*CAMERA_LINE:
             self.camera = p.y-H*CAMERA_LINE
         self.height = max(self.height,int(self.start_y-p.y))
@@ -78,7 +87,7 @@ class World:
         self.platform=[q for q in self.platform if not q.dead and q.y < self.camera + H + 20]
         self.enemy = [e for e in self.enemy if not e.dead]
         if p.y - self.camera > H:
-            self.dead = True
+            self.die(4,15)
 
     def draw(self,surf):
         surf.fill(sky_color(self.height))

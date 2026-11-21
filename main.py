@@ -78,7 +78,10 @@ def main():
                 txt(canvas, "You fell!", H//2-20, big_ft)
                 txt(canvas, "Press R to try again", H//2+10)
 
-        pygame.transform.scale(canvas, window.get_size(), window)
+        ox, oy = world.shake.update()
+        scale = pygame.transform.scale(canvas, window.get_size())
+        window.fill((0,0,0))
+        window.blit(scale, (int(ox*SCALE), int(oy*SCALE)))
         pygame.display.flip()
         clock.tick(FPS)
 

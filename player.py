@@ -1,3 +1,4 @@
+import random
 import pygame
 
 from asset import sprite
@@ -9,6 +10,7 @@ class Player:
         self.y = float(y)
         self.vy = JUMP
         self.facing = 1
+        self.jetpack = 0
 
     @property
     def rect(self):
@@ -27,12 +29,25 @@ class Player:
             self.x = W
         elif self.x > W:
             self.x = -PLAYER_W
-        self.vy += GRAV
+        if self.jetpack >0:
+            self.jetpack -= 1
+            self.vy = JETPACK_SPEED
+            if self.jetpack == 0:
+                self.vy = JETPACK_SPEED*0.4
+        else:
+            self.vy += GRAV
         self.y += self.vy
 
+
     def draw(self,surf,camera):
+        sx,sy = int(self.x), int(self.y-camera)
+        if self.jetpack > 0:
+            jx = sx - 5 if self.facing > 0 else sx + PLAYER_W - 3
+            jet = sprite("jetpack_worn.png", (8,12), (150,150,170))
+            surf.blit(jet, (jx,sy + 2))
+            pygame.draw.rect(surf,(255,160,40), (jx+2,sy+14,4, random.randint(3,7)))
         img = sprite("player.png", (PLAYER_W,PLAYER_H), (240,120,60))
         if self.facing < 0:
             img = pygame.transform.flip(img, True, False)
-        surf.blit(img, (int(self.x), int(self.y - camera)))
+        surf.blit(img,(sx,sy))
         

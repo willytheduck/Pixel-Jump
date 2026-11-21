@@ -62,19 +62,19 @@ class CPlatform(Platform):
         jitter = random.randint(-1,1) if self.timer is not None else 0
         surf.blit(img, (int(self.x) + jitter, int(self.y - camera)))
 
-class SPlatform(Platform):
-    sprite_name = "platform_spring.png"
+class TPlatform(Platform):
+    sprite_name = "platform_trampoline.png"
     color = (220,80,80)
     shake = (2,8)
 
     def on_land(self,player):
-        return SPRING_JUMP
+        return TRAMP_JUMP
 
 KIND = {
     "normal": NPlatform,
     "moving": MPlatform,
     "crumble": CPlatform,
-    "spring": SPlatform,
+    "trampoline": TPlatform,
 }
 
 def make_platform(kind,x,y):

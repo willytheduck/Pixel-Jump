@@ -13,15 +13,15 @@ class Zone:
 
 ZONE = [
     Zone("Forest", 0, (150, 200, 240),
-         {"normal": 8, "moving": 2, "spring": 1}, 0.05, {"bird": 1}),
+         {"normal": 8, "moving": 2, "trampoline": 1}, 0.05, {"bird": 1}),
     Zone("Alpine", 1000, (120, 160, 210),
-         {"normal": 6, "moving": 3, "crumble": 2, "spring": 1}, 0.10, {"bird": 1}),
+         {"normal": 6, "moving": 3, "crumble": 2, "trampoline": 1}, 0.10, {"bird": 1}),
     Zone("Snow", 2500, (190, 205, 225),
-         {"normal": 5, "moving": 3, "crumble": 3, "spring": 1}, 0.12, {"bird": 2, "rock": 1}),
+         {"normal": 5, "moving": 3, "crumble": 3, "trampoline": 1}, 0.12, {"bird": 2, "rock": 1}),
     Zone("Storm", 4000, (60, 60, 90),
-         {"normal": 4, "moving": 3, "crumble": 4, "spring": 1}, 0.18, {"bird": 2, "rock": 2}, 0.5),
+         {"normal": 4, "moving": 3, "crumble": 4, "trampoline": 1}, 0.18, {"bird": 2, "rock": 2}, 0.5),
     Zone("Summit", 5000, (20, 20, 50),
-         {"normal": 4, "moving": 3, "crumble": 4, "spring": 1}, 0.20, {"bird": 2, "rock": 2}, 0.6),
+         {"normal": 4, "moving": 3, "crumble": 4, "trampoline": 1}, 0.20, {"bird": 2, "rock": 2}, 0.6),
 ]
 
 def get_zone(height):

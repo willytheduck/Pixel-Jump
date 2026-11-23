@@ -8,6 +8,7 @@ from particles import Particles
 from player import Player
 from settings import *
 from shake import ScreenS
+import sound
 from zones import get_zone, pick, sky_color
 
 class World:
@@ -51,6 +52,7 @@ class World:
             self.dead = True
             self.death_cause = cause
             self.shake.trigger(strength, frame)
+            sound.play("fall" if cause == "fell" else "hit")
     def generate(self):
         while self.gen_y>self.camera-60:
             if self.summit_place and not self.endless: 
@@ -85,6 +87,9 @@ class World:
         else:
             self.combo = 0
         self.last_ly = plat.y
+        sound.play(plat.sound)
+        if self.combo >= 2:
+            sound.play_combo(self.combo)
         if plat.summit and not self.endless:
             self.won = True
 
@@ -135,6 +140,7 @@ class World:
                 e.dead = True
                 p.vy = STOMP_BOUNCE
                 self.bonus += STOMP_POINTS
+                sound.play("stomp")
                 self.shake.trigger(3,8)
             else:
                 self.die(6,20,"Hit by a "+ type(e).__name__)
@@ -152,8 +158,6 @@ class World:
             self.notice_timer = NOTICE_FRAME
         if self.notice_timer >0:
             self.notice_timer -= 1
-        # if self.height >= PEAK_HEIGHT:
-        #     self.reach_peak = True
         self.particles.update(wind, z.wind)
         self.generate()
         self.platform=[q for q in self.platform if not q.dead and q.y < self.camera + H + 20]

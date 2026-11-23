@@ -3,6 +3,7 @@ import os
 import sys
 import pygame
 from settings import * 
+pygame.mixer.pre_init(44100, -16,2, 512)
 pygame.init()
 window = pygame.display.set_mode((W*SCALE,H*SCALE))
 pygame.display.set_caption(TITLE)
@@ -12,6 +13,8 @@ ft = pygame.font.Font(None, 20)
 big_ft = pygame.font.Font(None, 40)
 
 from world import World
+import sound
+sound.init()
 
 SAVE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), HIGHSCORE_FILE)
 WHITE = (255,255,255)
@@ -113,45 +116,61 @@ def main():
             if event.type != pygame.KEYDOWN:
                 continue
             key = event.key
+            if key == pygame.K_m:
+                sound.toggle_mute()
+                continue
             if state == "title":
                 if key in (pygame.K_SPACE, pygame.K_RETURN):
                     state = "play"
+                    sound.play("select")
+                    sound.music_play()
                 elif key == pygame.K_ESCAPE:
                     quit_game(world)
             elif state == "play":
                 if key == pygame.K_r:
                     restart(world)
                     save, best_before=False,world.best
+                    sound.music_play()
                 elif key in (pygame.K_ESCAPE, pygame.K_p):
                     if world.dead:
                         quit_game(world)
                     else:
                         state, menu_i = "paused", 0
+                        sound.music_pause()
+                        sound.play("select")
             elif state == "paused":
                 if key in (pygame.K_ESCAPE, pygame.K_p):
                     state = "play"
+                    sound.music_unpause()
                 elif key in (pygame.K_UP, pygame.K_w):
                     menu_i = (menu_i - 1) % len(PAUSE_MENU)
+                    sound.play("move")
                 elif key in (pygame.K_DOWN, pygame.K_s):
                     menu_i = (menu_i + 1) % len(PAUSE_MENU)
+                    sound.play("move")
                 elif key in (pygame.K_RETURN, pygame.K_SPACE):
                     choice = PAUSE_MENU[menu_i]
+                    sound.play("select")
                     if choice == "Resume":
                         state = "play"
+                        sound.music_unpause()
                     elif choice == "Restart":
                         restart(world)
-                        save, best_before = 0, False, world.best
+                        save, best_before = False, world.best
                         state = "play"
+                        sound.music_play()
                     else:
                         quit_game(world)
             elif state == "won":
                 if key == pygame.K_c:
                     world.endless = True
                     state = "play"
+                    sound.music_play()
                 elif key == pygame.K_r:
                     restart(world)
                     save, best_before = False, world.best
                     state = "play"
+                    sound.music_play()
                 elif key == pygame.K_ESCAPE:
                     quit_game(world)
         if state == "play":
@@ -159,15 +178,19 @@ def main():
             if world.won and not world.endless:
                 state="won"
                 save_best(world.best)
+                sound.music_stop()
+                sound.play("win")
             if world.dead and not save:
                 save_best(world.best)
                 save = True
+                sound.music_stop()
         world.draw(canvas)
         if state == "title":
             txt(canvas, "PEAK", 100, big_ft)
             txt(canvas, "Press SPACE to climb", 150)
             txt(canvas, f"Best: {world.best}", 175)
             txt(canvas, "A/D or arrows = move   P = pause", H-30, ft, GREY)
+            txt(canvas, "M = mute sound", H-16, ft,GREY)
         else:
             draw_hud(canvas,world)
             if state == "play" and not world.dead:

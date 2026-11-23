@@ -4,6 +4,7 @@ import pygame
 
 from asset import sprite, ASSETS_DIR
 from settings import *
+import sound
 
 class Platform:
     sprite_name = "platform.png"
@@ -13,6 +14,7 @@ class Platform:
     summit = False
     dust=(190,180,150)
     dust_n = 5
+    sound = "jump"
     def __init__(self,x,y):
         self.x = float(x)
         self.y = float(y)
@@ -63,8 +65,9 @@ class CPlatform(Platform):
     def update(self):
         if self.timer is not None:
             self.timer -= 1
-            if self.timer <= 0:
+            if self.timer <= 0 and not self.dead:
                 self.dead = True
+                sound.play("crack")
     def draw(self, surf, camera):
         img = sprite(self.sprite_name, (self.w, self.h), self.color)
         jitter = random.randint(-1,1) if self.timer is not None else 0
@@ -74,6 +77,7 @@ class TPlatform(Platform):
     sprite_name = "platform_trampoline.png"
     color = (220,80,80)
     shake = (2,8)
+    sound = "boing"
     dust = (240,130,130)
     dust_n = 10
 

@@ -3,6 +3,7 @@ import random
 import pygame
 from asset import sprite
 from settings import *
+import sound
 
 class Enemy:
     sprite_name = "enemy.png"
@@ -90,6 +91,7 @@ class Bat(Enemy):
                 if 0 < below < self.TRIGGER and abs(player.x - self.x)<110:
                     self.state = "alert"
                     self.timer = self.ALERT
+                    sound.play("bat")
         elif self.state == "alert":
             self.x += random.uniform(-1,1)
             self.timer -= 1

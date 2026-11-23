@@ -36,3 +36,7 @@ STOMP_POINTS = 30
 
 #wind particles
 MAX_WIND_STREAKS = 40
+#sound
+SOUND_ENABLED = True
+SFX_VOLUME = 0.5
+MUSIC_VOLUME = 0.4

@@ -152,6 +152,8 @@ class World:
         #zone popup
         z = self.zone
         if z.name != self.cur_zone:
+            if self.cur_zone is not None:
+                sound.play("zone")
             self.cur_zone = z.name
             self.notice = z.name
             self.notice_sub = f"{z.start}m"

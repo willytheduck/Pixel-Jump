@@ -87,7 +87,7 @@ for _n in range(2,8):
 def _make(mono):
     data = array.array("h")
     for s in mono:
-        data.extende([s]*_channels)
+        data.extend([s]*_channels)
     return pygame.mixer.Sound(buffer=data.tobytes())
 
 def _get(name):
@@ -109,3 +109,46 @@ def _get(name):
                 snd = None
         _cache[name] = snd
         return snd
+
+def play(name, vol=1.0):
+    if not _ready or _muted:
+        return
+    snd = _get(name)
+    if snd:
+        snd.set_volume(min(1.0,SFX_VOLUME*vol))
+        snd.play()
+
+def play_combo(n):
+    play(f"combo{max(2,min(n,7))}")
+
+def music_play():
+    if not _ready:
+        return
+    for ext in (".ogg", ".mp3", ".wav"):
+        path = os.path.join(SOUND_DIR, "music" + ext)
+        if os.path.exists(path):
+            try:
+                pygame.mixer.music.load(path)
+                pygame.mixer.music.set_volume(0 if _muted else MUSIC_VOLUME)
+                pygame.mixer.music.play(-1)
+            except pygame.error:
+                pass
+            return
+def music_pause():
+    if _ready:
+        pygame.mixer.music.pause()
+
+def music_unpause():
+    if _ready:
+        pygame.mixer.music.unpause()
+
+def music_stop():
+    if _ready:
+        pygame.mixer.music.stop()
+
+def toggle_mute():
+    global _muted
+    _muted = not _muted
+    if _ready:
+        pygame.mixer.music.set_volume(0 if _muted else MUSIC_VOLUME)
+    return _muted

@@ -1,6 +1,7 @@
 import pygame
 from asset import sprite
 from settings import *
+import sound
 class PowerUp:
     sprite_name = "powerup.png"
     color = (255,0,255)
@@ -36,6 +37,7 @@ class Jetpack(PowerUp):
         player.jetpack = JETPACK_FRAMES
         self.dead = True
         world.shake.trigger(3,10)
+        sound.play("pickup")
 
 KIND = {"jetpack": Jetpack}
 def make_powerup(kind,x,y):

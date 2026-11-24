@@ -1,7 +1,9 @@
 import os
 import pygame
+
 ASSETS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
 _cache = {}
+
 
 def sprite(name, size, color):
     if name in _cache:

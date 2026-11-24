@@ -4,8 +4,9 @@ import pygame
 from asset import sprite
 from settings import *
 
+
 class Player:
-    def __init__(self,x,y):
+    def __init__(self, x, y):
         self.x = float(x)
         self.y = float(y)
         self.vy = JUMP
@@ -16,7 +17,7 @@ class Player:
     def rect(self):
         return pygame.Rect(int(self.x), int(self.y), PLAYER_W, PLAYER_H)
 
-    def update(self,keys, wind=0.0):
+    def update(self, keys, wind=0.0):
         dx = 0
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             dx -= SPED
@@ -29,25 +30,25 @@ class Player:
             self.x = W
         elif self.x > W:
             self.x = -PLAYER_W
-        if self.jetpack >0:
+        if self.jetpack > 0:
             self.jetpack -= 1
             self.vy = JETPACK_SPEED
             if self.jetpack == 0:
-                self.vy = JETPACK_SPEED*0.4
+                self.vy = JETPACK_SPEED * 0.4
         else:
             self.vy += GRAV
         self.y += self.vy
 
-
-    def draw(self,surf,camera):
-        sx,sy = int(self.x), int(self.y-camera)
+    def draw(self, surf, camera):
+        sx, sy = int(self.x), int(self.y - camera)
         if self.jetpack > 0:
             jx = sx - 5 if self.facing > 0 else sx + PLAYER_W - 3
-            jet = sprite("jetpack_worn.png", (8,12), (150,150,170))
-            surf.blit(jet, (jx,sy + 2))
-            pygame.draw.rect(surf,(255,160,40), (jx+2,sy+14,4, random.randint(3,7)))
-        img = sprite("player.png", (PLAYER_W,PLAYER_H), (240,120,60))
+            jet = sprite("jetpack_worn.png", (8, 12), (150, 150, 170))
+            surf.blit(jet, (jx, sy + 2))
+            pygame.draw.rect(
+                surf, (255, 160, 40), (jx + 2, sy + 14, 4, random.randint(3, 7))
+            )
+        img = sprite("player.png", (PLAYER_W, PLAYER_H), (240, 120, 60))
         if self.facing < 0:
             img = pygame.transform.flip(img, True, False)
-        surf.blit(img,(sx,sy))
-        
+        surf.blit(img, (sx, sy))

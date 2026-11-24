@@ -10,33 +10,33 @@ STOMP_BOUNCE = -6.0
 SPED = 2.4
 
 PLAYER_W, PLAYER_H = 14, 16
-PLAT_W, PLAT_H = 36,8
+PLAT_W, PLAT_H = 36, 8
 
 CAMERA_LINE = 0.4
 PEAK_HEIGHT = 15000
 HIGHSCORE_FILE = "highscore.json"
 
-SHAKE_ENABLE = True 
+SHAKE_ENABLE = True
 
-#trampoline and jetpack
+# trampoline and jetpack
 TRAMP_JUMP = -11.5
 JETPACK_FRAMES = 90
 JETPACK_SPEED = -7.0
 JETPACK_CHANCE = 0.03
 
-#summit
+# summit
 SUMMIT_W = 140
 END_SAFE_ZONE = 800
 
-NOTICE_FRAME = 120 #zone popup
-#combo
+NOTICE_FRAME = 120  # zone popup
+# combo
 COMBO_MIN_HOP = 40
 COMBO_POINTS = 10
 STOMP_POINTS = 30
 
-#wind particles
+# wind particles
 MAX_WIND_STREAKS = 40
-#sound
+# sound
 SOUND_ENABLED = True
 SFX_VOLUME = 0.5
 MUSIC_VOLUME = 0.4

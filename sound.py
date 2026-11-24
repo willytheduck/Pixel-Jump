@@ -4,8 +4,9 @@ import os
 import random
 import pygame
 from settings import *
+from paths import resource_path
 
-SOUND_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sounds")
+SOUND_DIR = resource_path("sounds")
 _cache = {}
 _ready = False
 _synth_ok = False
@@ -83,7 +84,7 @@ RECIPES = {
     "pickup": lambda: _seq(
         _tone(440, 0.06, "square", 0.25),
         _tone(660, 0.06, "square", 0.25),
-        _tone(880, 0.10, "aquare", 0.25),
+        _tone(880, 0.10, "square", 0.25),
     ),
     "hit": lambda: _mix(
         _tone(0, 0.25, "noise", 0.35), _tone(300, 0.25, "square", 0.3, 70)
@@ -92,9 +93,9 @@ RECIPES = {
     "crack": lambda: _tone(0, 0.12, "noise", 0.3),
     "bat": lambda: _tone(1500, 0.14, "square", 0.16, 900),
     "zone": lambda: _seq(
-        _tone(523, 0.14, "triangle", 0.4),
+        _tone(523, 0.11, "triangle", 0.4),
         _tone(659, 0.11, "triangle", 0.4),
-        _tone(784, 0.18, "triangle,0.4"),
+        _tone(784, 0.18, "triangle", 0.4),
     ),
     "win": lambda: _seq(
         _tone(523, 0.14, "triangle", 0.45),
@@ -131,13 +132,13 @@ def _get(name):
             except pygame.error:
                 snd = None
             break
-        if snd is None and _synth_ok and name in RECIPES:
-            try:
-                snd = _make(RECIPES[name]())
-            except (pygame.error, TypeError, ValueError):
-                snd = None
-        _cache[name] = snd
-        return snd
+    if snd is None and _synth_ok and name in RECIPES:
+        try:
+            snd = _make(RECIPES[name]())
+        except (pygame.error, TypeError, ValueError):
+            snd = None
+    _cache[name] = snd
+    return snd
 
 
 def play(name, vol=1.0):

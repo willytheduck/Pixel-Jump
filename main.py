@@ -3,6 +3,7 @@ import os
 import sys
 import pygame
 from settings import *
+from paths import save_path
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
@@ -18,7 +19,7 @@ import sound
 
 sound.init()
 
-SAVE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), HIGHSCORE_FILE)
+SAVE_PATH = save_path(HIGHSCORE_FILE)
 WHITE = (255, 255, 255)
 GOLD = (255, 230, 90)
 GREY = (200, 200, 200)

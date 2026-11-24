@@ -1,7 +1,8 @@
 import os
 import pygame
+from paths import resource_path
 
-ASSETS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
+ASSETS_DIR = resource_path("assets")
 _cache = {}
 
 

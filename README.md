@@ -33,4 +33,11 @@ Here's how to play:
 3. Enjoy!
 M to mute (unfortunately there is no music)
 
+
+How to install: 
+Go here: https://willylim.itch.io/pixel-jump
+1. Install the .exe file
+2. Run it
+3. Boom done! Enjoy!
+
 enjoy! some might be impossible when higher up so yeah...
